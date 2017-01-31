@@ -1,0 +1,19 @@
+create database battle.port(new)
+
+create table player_info
+(name varchar(10),
+score varchar(10))
+
+insert into player_info(name,score) values('Zaahier', 100000)
+insert into player_info(name,score) values('kerem',1)
+insert into player_info(name,score) values('kerem',1)
+insert into player_info(name,score) values('kerem',1)
+insert into player_info(name,score) values('kerem',1)
+insert into player_info(name,score) values('kerem',1)
+
+
+
+select * from player_info
+
+
+### QUERY LIST ###
