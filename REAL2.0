@@ -13,7 +13,7 @@ red = (200, 0, 0)
 white = (255, 255, 255)
 
 width = 800
-Height = 600
+height = 600
 screen = pygame.display.set_mode((width, height))
 bg = pygame.image.load('sea2.jpg')
 back_button = pygame.image.load('backbutton4.png')
@@ -392,8 +392,13 @@ def highscore():
         screen.blit(result5_name, (width /2 - 250, (280)))
         screen.blit(result5_score, (width / 2 + 200, (280)))
 
+        screen.blit(back_button, (10,10))
 
         pygame.display.flip()
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                draw_menu()
 
 
         for event in pygame.event.get():
