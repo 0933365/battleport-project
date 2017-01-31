@@ -1,0 +1,403 @@
+import pygame
+import psycopg2
+
+pygame.init()
+
+
+pygame.mixer.music.load('Path of Exile - Atlas of Worlds - Four Guardians [PoE Soundtrack].mp3')
+
+pygame.mixer.music.play(-1, 8)
+
+bright_red = (255, 0, 0)
+red = (200, 0, 0)
+white = (255, 255, 255)
+
+width = 800
+Height = 600
+screen = pygame.display.set_mode((width, height))
+bg = pygame.image.load('sea2.jpg')
+back_button = pygame.image.load('backbutton4.png')
+battle_port = pygame.image.load('BattlePort.gif')
+pause = pygame.image.load('hqdefault.jpg')
+instructions_image = pygame.image.load('instructions.png')
+next_button = pygame.image.load('nextbutton.png')
+instructions_text = pygame.image.load('instructions1.png')
+instructions_texttwee = pygame.image.load('instructions2.png')
+instructions_textdrie = pygame.image.load('instructions3.png')
+instructions_textvier = pygame.image.load('instructions4.png')
+pauze_button = pygame.image.load('pauzebutton.png')
+hqdefault = pygame.image.load('hqdefault.jpg')
+bgrect = bg.get_rect()
+size = (width, height) = bg.get_size()
+music = 0
+
+
+
+
+
+def draw_game():
+
+    start = True
+
+    BLACK = (0, 0, 0)
+    WHITE = (255, 255, 255)
+    GREEN = (0, 255, 0)
+    RED = (255, 0, 0)
+    WIDTH = 50
+    HEIGHT = 50
+    MARGIN = 5
+
+
+
+    grid = []
+    for row in range(25):
+
+
+
+        grid.append([])
+        for column in range(25):
+            grid[row].append(0)  # Append a cell
+
+
+
+    pygame.display.set_caption("Array Backed Grid")
+
+    while start:
+        pygame.display.set_mode((1100, 655))
+        screen.blit(pauze_button, (1000, 10))
+        mouse = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():  # User did something
+            if event.type == pygame.QUIT:  # If user clicked close
+                start = False  # Flag that we are done so we exit this loop
+
+
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+
+                # User clicks the mouse. Get the position
+                pos = pygame.mouse.get_pos()
+
+                # Change the x/y screen coordinates to grid coordinates
+                column = pos[0] // (WIDTH + MARGIN)
+                row = pos[1] // (HEIGHT + MARGIN)
+
+                # Set that location to one
+                grid[row][column] = 1
+                print("Click ", pos, "Grid coordinates: ", row, column)
+
+
+
+        # Draw the grid
+
+        for row in range(11):
+            for column in range(15):
+                color = WHITE
+                if grid[row][column] == 1:
+                    color = RED
+
+                pygame.draw.rect(screen,color,[(MARGIN + WIDTH) * column + MARGIN,(MARGIN + HEIGHT) * row + MARGIN,WIDTH,HEIGHT])
+
+        if (1000 + 83) > mouse[0] > 1000 and (10 + 43) > mouse[1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pauze_menu()
+
+        pygame.display.flip()
+
+
+
+
+
+def pauze_menu():
+    pauze = True
+    music = 0
+
+    while pauze:
+        pygame.display.set_mode((width, height))
+        screen.blit(bg, (0, 0))
+        screen.blit(hqdefault, (300, 100))
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                pauze = False
+                quit()
+
+        mouse = pygame.mouse.get_pos()
+        if (478 + 120) > mouse[0] > 0 and (246 + 27) > mouse[1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                break
+
+        if (478 + 120 > mouse[0] > 0 and (304 + 28)) > mouse[1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                draw_game()
+        if (478 + 120 > mouse[0] > 0 and (360 + 25)) > mouse[1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                draw_menu()
+        if (332 + 38 > mouse[0] > 0 and (383 + 34)) > mouse[1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+
+                if music == 0:
+                    music = music + 1
+                    pygame.mixer.music.pause()
+                else:
+                    pygame.mixer.music.unpause()
+                    music = music - 1
+        pygame.display.flip()
+
+
+
+
+
+def draw_instructions():
+    instructions = True
+
+
+
+    while instructions:
+
+        pygame.display.set_mode((width, height))
+
+        screen.blit(bg, (0, 0))
+        screen.blit(back_button, (10, 10))
+        screen.blit(instructions_image, (410, 20))
+        screen.blit(next_button, (1000, 10))
+        screen.blit(instructions_text, (50, 150))
+        screen.blit(instructions_texttwee, (570, 150))
+
+
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                draw_menu()
+            if (1000 + 49) > mouse[0] > 1000 and (10 + 43) > mouse[1] > 10:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    instructions_twee()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                instructions = False
+
+        pygame.display.flip()
+
+
+
+def instructions_twee():
+
+    instructions = True
+
+    while instructions:
+        pygame.display.set_mode((width, height))
+        screen.blit(bg, (0, 0))
+        screen.blit(back_button, (10, 10))
+        screen.blit(instructions_image, (410, 20))
+        screen.blit(instructions_textdrie, (50, 150))
+        screen.blit(instructions_textvier, (570, 150))
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                draw_instructions()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                instructions = False
+
+
+
+
+
+def button_display():
+    mouse = pygame.mouse.get_pos()
+    click = pygame.mouse.get_pressed()
+
+    # START BUTTON
+    if ((width / 2 - 25) + 90) > mouse[0] > width / 2 - 25 and ((height / 2 - 45) + 40) > mouse[1] > height / 2 - 45:
+        pygame.draw.rect(screen, bright_red, (width / 2 - 25, height / 2 - 45, 90, 40))
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                draw_game()
+
+
+
+    else:
+        pygame.draw.rect(screen, red, (width / 2 - 25, height / 2 - 45, 90, 40))
+
+
+    # INSTRUCTIONS BUTTON
+    if ((width / 2 - 85) + 215) > mouse[0] > width / 2 - 85 and ((height / 2 - 5) + 40) > mouse[1] > height / 2 - 5:
+        pygame.draw.rect(screen, bright_red, (width / 2 - 85, height / 2 - 5, 215, 40))
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                draw_instructions()
+
+    else:
+        pygame.draw.rect(screen, red, (width / 2 - 85, height / 2 - 5, 215, 40))
+
+
+    # HIGHSCORE BUTTON
+    if ((width / 2 - 55) + 160) > mouse[0] > width / 2 - 55 and ((height / 2 + 35) + 40) > mouse[1] > height / 2 + 35:
+        pygame.draw.rect(screen, bright_red, (width / 2 - 55, height / 2 + 35, 175, 40))
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                highscore()
+    else:
+        pygame.draw.rect(screen, red, (width / 2 - 55, height / 2 + 35, 175, 40))
+
+
+
+    # QUIT BUTTON
+    if ((width / 2 - 20) + 80) > mouse[0] > width / 2 - 20 and ((height / 2 + 75) + 40) > mouse[1] > height / 2 + 75:
+        pygame.draw.rect(screen, bright_red, (width / 2 - 20, height / 2 + 75, 80, 40))
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pygame.quit()
+                quit()
+
+    else:
+        pygame.draw.rect(screen, red, (width / 2 - 20, height / 2 + 75, 80, 40))
+
+
+
+def text_display():
+
+    fg = 255, 255, 255
+    bg = 5, 5, 5
+
+    font = pygame.font.Font(None, 50)
+    text = 'Start'
+    text2 = 'Quit'
+    text3 = 'Instructions'
+    text4 = 'Highscore'
+    size = font.size(text)
+
+
+
+    # START TEXT
+    ren = font.render(text, 0, fg)
+    screen.blit(ren, (width / 2 - 20, height / 2 - 40))
+
+    # INSTRUCTIONS TEXT
+    ren = font.render(text3, 0, fg)
+    screen.blit(ren, (width / 2 - 80, (height / 2)))
+
+    # HIGHSCORE TEXT
+    ren = font.render(text4, 0, fg)
+    screen.blit(ren, (width / 2 - 50, (height / 2 + 40)))
+
+    # QUIT TEXT
+    ren = font.render(text2, 0, fg)
+    screen.blit(ren, (width / 2 - 15, (height / 2 + 80)))
+    sys_font = pygame.font.SysFont("Arial", 60)
+
+
+def draw_menu():
+
+    start = True
+    while start:
+        pygame.display.set_mode((width, height))
+        screen.blit(bg, (0, 0))
+        screen.blit(battle_port, (95, 20))
+        button_display()
+        text_display()
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                start = False
+
+
+def interact_with_database(command):
+    connection = psycopg2.connect("dbname=battle.port(new) user=postgres")
+    cursor = connection.cursor()
+    cursor.execute(command)  # Execute the command
+    connection.commit()
+    results = None  # Save results
+
+
+    try:
+        results = cursor.fetchall()
+
+    except psycopg2.ProgrammingError:
+        pass  # Nothing to fetch
+
+    cursor.close()  # Close connection
+    connection.close()
+    print(results)
+    return results
+
+
+#def winscreen():
+
+
+
+
+#def win_name():
+    name=input("champion! what is your name.")
+
+
+
+def download_top_score():  # Downloads the top score from database
+    result = interact_with_database("SELECT * FROM player_info ORDER BY score")
+    return result
+
+
+def highscore():
+    download_top_score()
+    go = True
+    font = pygame.font.Font(None, 50)
+    text = 'highscore'
+    fg = (0,0,0)
+    ren = font.render(text, 0, fg)
+
+
+    while go:
+
+
+        pygame.display.set_mode((width, height))
+
+        result1_name = font.render(interact_with_database("SELECT score,name FROM player_info order by score " )[-1][1], 0 , fg)
+        result1_score = font.render(interact_with_database("SELECT * FROM player_info order by score ")[-1][1], 0, fg)
+
+        result2_name = font.render(interact_with_database("SELECT score,name FROM player_info order by score ")[-2][1], 0, fg)
+        result2_score = font.render(interact_with_database("SELECT * FROM player_info order by score ")[-2][1], 0, fg)
+
+        result3_name = font.render(interact_with_database("SELECT score,name FROM player_info order by score ")[-3][1], 0, fg)
+        result3_score = font.render(interact_with_database("SELECT * FROM player_info order by score ")[-3][1], 0, fg)
+
+        result4_name = font.render(interact_with_database("SELECT score,name FROM player_info order by score ")[-3][1], 0, fg)
+        result4_score = font.render(interact_with_database("SELECT * FROM player_info order by score ")[-3][1], 0, fg)
+
+        result5_name = font.render(interact_with_database("SELECT score,name FROM player_info order by score ")[-4][1], 0, fg)
+        result5_score = font.render(interact_with_database("SELECT * FROM player_info order by score ")[-4][1], 0, fg)
+
+
+        screen.blit(bg,(0,0))
+
+        screen.blit(ren, (width / 2 - 50, (60)))
+
+
+        screen.blit(result1_name,(width /2 - 250, (160)))
+        screen.blit(result1_score, (width / 2 + 200, (160)))
+
+        screen.blit(result2_name, (width /2 - 250, (190)))
+        screen.blit(result2_score, (width / 2 + 200, (190)))
+
+        screen.blit(result3_name, (width /2 - 250, (220)))
+        screen.blit(result3_score, (width / 2 + 200, (220)))
+
+        screen.blit(result4_name, (width /2 - 250, (250)))
+        screen.blit(result4_score, (width / 2 + 200, (250)))
+
+        screen.blit(result5_name, (width /2 - 250, (280)))
+        screen.blit(result5_score, (width / 2 + 200, (280)))
+
+
+        pygame.display.flip()
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
+draw_menu()
