@@ -1,0 +1,144 @@
+import pygame
+import random
+import psycopg2
+
+txt = input("what's your name: ")
+print("welcome   " + txt)
+print("""battleport (version1.1.11351) is now booting up"""
+
+
+
+"\n""\n""\n"
+
+
+"now open the real battleport game by clicking on the bottom pygame window,"
+"\n"
+"\n"
+"please support our official release         (when it happens)""")
+
+pygame.init()
+
+bright_red = (255, 0, 0)
+red = (200, 0, 0)
+white = (255, 255, 255)
+pygame.mixer.music.load('Path of Exile - Atlas of Worlds - Four Guardians [PoE Soundtrack].mp3')
+pygame.mixer.music.play(-1, 8)
+
+
+
+
+width = 800
+height = 600
+screen = pygame.display.set_mode((width, height))
+bg = pygame.image.load('sea2.jpg')
+winscreen1 = pygame.image.load('win-screen.png')
+back_button = pygame.image.load('backbutton4.png')
+battle_port = pygame.image.load('BattlePort.gif')
+instructions_image = pygame.image.load('instructions.png')
+next_button = pygame.image.load('nextbutton.png')
+instructions_text = pygame.image.load('instructions1.png')
+instructions_texttwee = pygame.image.load('instructions2.png')
+instructions_textdrie = pygame.image.load('instructions3.png')
+instructions_textvier = pygame.image.load('instructions4.png')
+pauze_button = pygame.image.load('pauzebutton.png')
+hqdefault = pygame.image.load('hqdefault.jpg')
+red_turn = pygame.image.load('REd-turn.gif')
+green_turn = pygame.image.load('green-turn.gif')
+GreenBoat1 = pygame.image.load('GreenBoat1.png')
+GreenBoat2 = pygame.image.load('GreenBoat2.png')
+GreenBoat3 = pygame.image.load('GreenBoat3.png')
+RedBoat1 = pygame.image.load('RedBoat1.png')
+RedBoat2 = pygame.image.load('RedBoat2.png')
+RedBoat3 = pygame.image.load('RedBoat3.png')
+continue_button = pygame.image.load('Continue.png')
+attack_button = pygame.image.load('attack.png')
+boat_green1_1 = pygame.image.load("GreenBoat1.png")
+boat_green1_2 = pygame.image.load("GreenBoat1.2.png")
+boat_green1_3 = pygame.image.load("GreenBoat1.3.png")
+boat_green1_4 = pygame.image.load("GreenBoat1.4.png")
+boat_green2_1 = pygame.image.load("GreenBoat2.png")
+boat_green2_2 = pygame.image.load("GreenBoat2.2.png")
+boat_green2_3 = pygame.image.load("GreenBoat2.3.png")
+boat_green2_4 = pygame.image.load("GreenBoat2.4.png")
+boat_green3_1 = pygame.image.load("GreenBoat3.png")
+boat_green3_2 = pygame.image.load("GreenBoat3.2.png")
+boat_green3_3 = pygame.image.load("GreenBoat3.3.png")
+boat_green3_4 = pygame.image.load("GreenBoat3.4.png")
+deadboat = pygame.image.load('deadboat.png')
+boat_red1_1 = pygame.image.load("RedBoat1.png")
+boat_red1_2 = pygame.image.load("RedBoat1.2.png")
+boat_red1_3 = pygame.image.load("RedBoat1.3.png")
+boat_red1_4 = pygame.image.load("RedBoat1.4.png")
+boat_red2_1 = pygame.image.load("RedBoat2.png")
+boat_red2_2 = pygame.image.load("RedBoat2.2.png")
+boat_red2_3 = pygame.image.load("RedBoat2.3.png")
+boat_red2_4 = pygame.image.load("RedBoat2.4.png")
+boat_red3_1 = pygame.image.load("RedBoat3.png")
+boat_red3_2 = pygame.image.load("RedBoat3.2.png")
+boat_red3_3 = pygame.image.load("RedBoat3.3.png")
+boat_red3_4 = pygame.image.load("RedBoat3.4.png")
+end_turn = pygame.image.load("end turn.png")
+grid_bg = pygame.image.load("gridps.png")
+card = pygame.image.load('3032008-four-aces.jpg')
+shipstats = pygame.image.load('shipstats.png')
+cards = pygame.image.load('cards.png')
+bgrect = bg.get_rect()
+size = (width, height) = bg.get_size()
+
+def download_top_score():  # Downloads the top score from database
+    result = interact_with_database("select * from player_info order by length(score), score")
+    return result
+
+def highscore():
+
+    download_top_score()
+    go = True
+    font = pygame.font.Font(None, 50)
+    text = 'Highscore (Top - 5)'
+    fg = (0, 0, 0)
+    ren = font.render(text, 0, fg)
+
+    while go:
+
+        pygame.display.set_mode((width, height))
+
+        result1_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-1][1], 0, fg)
+        result1_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-1][1], 0,fg)
+        result2_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-2][1], 0, fg)
+        result2_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-2][1], 0,fg)
+        result3_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-3][1], 0, fg)
+        result3_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-3][1], 0,fg)
+        result4_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-4][1], 0, fg)
+        result4_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score")[-4][1], 0,fg)
+        result5_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-5][1], 0, fg)
+        result5_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-5][1], 0,fg)
+
+        screen.blit(bg, (0, 0))
+        screen.blit(ren, (width / 2 - 150, (60)))
+        screen.blit(result1_name, (width / 2 - 250, (190)))
+        screen.blit(result1_score, (width / 2 + 200, (190)))
+        screen.blit(result2_name, (width / 2 - 250, (220)))
+        screen.blit(result2_score, (width / 2 + 200, (220)))
+        screen.blit(result3_name, (width / 2 - 250, (250)))
+        screen.blit(result3_score, (width / 2 + 200, (250)))
+        screen.blit(result4_name, (width / 2 - 250, (280)))
+        screen.blit(result4_score, (width / 2 + 200, (280)))
+        screen.blit(result5_name, (width / 2 - 250, (310)))
+        screen.blit(result5_score, (width / 2 + 200, (310)))
+        screen.blit(back_button, (10, 10))
+
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                draw_menu()
+        # for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
