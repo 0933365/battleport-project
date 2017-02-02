@@ -1,0 +1,155 @@
+    pygame.display.flip()
+
+
+
+def pauze_menu():
+    pauze = True
+    music = 0
+    while pauze:
+        pygame.display.set_mode((width, height))
+        screen.blit(bg, (0,0))
+        screen.blit(hqdefault, (300,100))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                pauze == False
+                quit()
+        mouse = pygame.mouse.get_pos()
+        print (mouse)
+        if (478 + 120) > mouse[0] > 0 and (245 + 27) > mouse[1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                break
+        if (478 + 120 > mouse[0]>0 and (302 + 28)) > mouse [1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                draw_game()
+        if (478 + 120 > mouse[0]>0 and (360 + 25)) > mouse [1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                draw_menu()
+        if (332 + 38 > mouse[0]>0 and (383 + 34)) > mouse [1] > 10:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if music == 0:
+                    music = music + 1
+                    pygame.mixer.music.pause()
+                else:
+                    pygame.mixer.music.unpause()
+                    music = music - 1
+
+        pygame.display.flip()
+
+
+def download_top_score():  # Downloads the top score from database
+    result = interact_with_database("select * from player_info order by length(score), score")
+    return result
+
+def highscore():
+
+    download_top_score()
+    go = True
+    font = pygame.font.Font(None, 50)
+    text = 'Highscore (Top - 5)'
+    fg = (0, 0, 0)
+    ren = font.render(text, 0, fg)
+
+    while go:
+
+        pygame.display.set_mode((width, height))
+
+        result1_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-1][1], 0, fg)
+        result1_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-1][1], 0,fg)
+        result2_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-2][1], 0, fg)
+        result2_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-2][1], 0,fg)
+        result3_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-3][1], 0, fg)
+        result3_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-3][1], 0,fg)
+        result4_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-4][1], 0, fg)
+        result4_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score")[-4][1], 0,fg)
+        result5_name = font.render(
+                interact_with_database("SELECT score,name FROM player_info order by length(score), score ")[-5][1], 0, fg)
+        result5_score = font.render(interact_with_database("SELECT * FROM player_info order by length(score), score ")[-5][1], 0,fg)
+
+        screen.blit(bg, (0, 0))
+        screen.blit(ren, (width / 2 - 150, (60)))
+        screen.blit(result1_name, (width / 2 - 250, (190)))
+        screen.blit(result1_score, (width / 2 + 200, (190)))
+        screen.blit(result2_name, (width / 2 - 250, (220)))
+        screen.blit(result2_score, (width / 2 + 200, (220)))
+        screen.blit(result3_name, (width / 2 - 250, (250)))
+        screen.blit(result3_score, (width / 2 + 200, (250)))
+        screen.blit(result4_name, (width / 2 - 250, (280)))
+        screen.blit(result4_score, (width / 2 + 200, (280)))
+        screen.blit(result5_name, (width / 2 - 250, (310)))
+        screen.blit(result5_score, (width / 2 + 200, (310)))
+        screen.blit(back_button, (10, 10))
+
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                draw_menu()
+        # for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+
+
+def interact_with_database(command):
+    connection = psycopg2.connect("dbname=battle.port(new) user=postgres")
+    cursor = connection.cursor()
+    cursor.execute(command)  # Execute the command
+    connection.commit()
+    results = None  # Save results
+
+    try:
+        results = cursor.fetchall()
+
+    except psycopg2.ProgrammingError:
+
+        pass  # Nothing to fetch
+
+    cursor.close()  # Close connection
+    connection.close()
+    return results
+
+def winscreen():
+    x = str(score)
+
+    pygame.mixer.music.load('Flawless Victory -Mortal Kombat Sound-.mp3')
+    pygame.mixer.music.play(0,2)
+    pygame
+    largeText = pygame.font.Font('freesansbold.ttf', 55)
+    TextSurf, TextRect = text_objects("    Your Score:         " + txt + "          " + x, largeText)
+    TextRect.center = ((100), (120))
+    interact_with_database("insert into player_info (name,score) values('{}', '{}')".format(txt,x))
+    font = pygame.font.Font(None, 50)
+    fg = (255,255,255)
+    yeah = True
+    while yeah:
+
+
+
+        pygame.display.set_mode((width, height))
+        screen.blit(bg, (0,0))
+        screen.blit(winscreen1, (200, 200))
+        screen.blit(back_button,(10,10))
+        screen.blit(TextSurf, TextRect.center)
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                highscore()
+            if event.type == pygame.QUIT:return
+
+
+
+        pygame.display.flip()
+
+def download_top_score():  # Downloads the top score from database
+    result = interact_with_database("select * from player_info order by length(score), score")
+    return result
+
+def text_objects(text, font):
+    TextSurface = font.render(text, True, (0,0,0))
+    return TextSurface, TextSurface.get_rect()
