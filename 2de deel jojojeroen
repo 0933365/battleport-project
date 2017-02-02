@@ -1,0 +1,39 @@
+def draw_game():
+    pygame.mixer.music.load('nautical008.mp3')
+    width = 1100
+    height = 680
+    light_blue = (82, 200, 220)
+    red = (255, 0, 0)
+    screen = pygame.display.set_mode((width, height))
+    press_cnt = 0
+    start = True
+    turn = True
+    step = 45
+    draw_card = True
+    global score
+    score = 20000
+
+    while start:
+        pygame.display.set_mode((width, height))
+        screen.blit(grid_bg, (0, 0))
+        screen.blit(pauze_button, (1000, 10))
+        screen.blit(end_turn, (690, 630))
+        screen.blit(card, (700, 10))
+        screen.blit(attack_button,(850,10))
+        screen.blit(boat_red3_3,(player1_boat.x, player1_boat.y))
+        screen.blit(boat_red1_3, (player1_boat1.x, player1_boat1.y))
+        screen.blit(boat_red2_3, (player1_boat2.x, player1_boat2.y))
+        screen.blit(boat_red3_3, (player1_boat3.x, player1_boat3.y))
+
+        screen.blit(boat_green3_1, (player2_boat.x, player2_boat.y))
+        screen.blit(boat_green1_1, (player2_boat1.x , player2_boat1.y))
+        screen.blit(boat_green2_1, (player2_boat2.x, player2_boat2.y))
+        screen.blit(boat_green3_1, (player2_boat3.x, player2_boat3.y))
+
+        if turn == True:
+            screen.blit(red_turn, (1000, 600))
+        else:
+            screen.blit(green_turn, (1000, 600))
+        key_count = 0
+
+        pygame.display.flip()
