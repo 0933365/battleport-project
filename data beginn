@@ -1,0 +1,57 @@
+def interact_with_database(command):
+    connection = psycopg2.connect("dbname=battle.port(new) user=postgres")
+    cursor = connection.cursor()
+    cursor.execute(command)  # Execute the command
+    connection.commit()
+    results = None  # Save results
+
+    try:
+        results = cursor.fetchall()
+
+    except psycopg2.ProgrammingError:
+
+        pass  # Nothing to fetch
+
+    cursor.close()  # Close connection
+    connection.close()
+    return results
+
+def winscreen():
+    x = str(score)
+
+    pygame.mixer.music.load('Flawless Victory -Mortal Kombat Sound-.mp3')
+    pygame.mixer.music.play(0,2)
+    pygame
+    largeText = pygame.font.Font('freesansbold.ttf', 55)
+    TextSurf, TextRect = text_objects("    Your Score:         " + txt + "          " + x, largeText)
+    TextRect.center = ((100), (120))
+    interact_with_database("insert into player_info (name,score) values('{}', '{}')".format(txt,x))
+    font = pygame.font.Font(None, 50)
+    fg = (255,255,255)
+    yeah = True
+    while yeah:
+
+
+
+        pygame.display.set_mode((width, height))
+        screen.blit(bg, (0,0))
+        screen.blit(winscreen1, (200, 200))
+        screen.blit(back_button,(10,10))
+        screen.blit(TextSurf, TextRect.center)
+        for event in pygame.event.get():
+            mouse = pygame.mouse.get_pos()
+            if back_button.get_rect().collidepoint(pygame.mouse.get_pos()) and event.type == pygame.MOUSEBUTTONDOWN:
+                highscore()
+            if event.type == pygame.QUIT:return
+
+
+
+        pygame.display.flip()
+
+def download_top_score():  # Downloads the top score from database
+    result = interact_with_database("select * from player_info order by length(score), score")
+    return result
+
+def text_objects(text, font):
+    TextSurface = font.render(text, True, (0,0,0))
+    return TextSurface, TextSurface.get_rect()
