@@ -1,0 +1,27 @@
+def download_top_score():  # Downloads the top score from database
+    result = interact_with_database("select * from player_info order by length(score), score")
+    return result
+
+def text_objects(text, font):
+    TextSurface = font.render(text, True, (0,0,0))
+    return TextSurface, TextSurface.get_rect()
+
+class Boat:
+    def __init__(self, x, y, hp, select, press, damage):
+        self.x = x
+        self.y = y
+        self.hp = hp
+        self.select = False
+        self.press = 0
+        self.damage = damage
+
+
+player1_boat = Boat(5, 5, 2, False,0,1)
+player1_boat1 = Boat(230, 5, 3, False,0,1)
+player1_boat2 = Boat(410, 5, 4, False,0,1)
+player1_boat3 = Boat(635, 5, 2, False,0,1)
+
+player2_boat = Boat(5, 635, 2, False,0,1)
+player2_boat1 = Boat(230, 635, 3, False,0,1)
+player2_boat2 = Boat(410, 635, 4, False,0,1)
+player2_boat3 = Boat(635, 635, 2, False,0,1)
